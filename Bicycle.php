@@ -1,5 +1,5 @@
 <?php
-class Bicycle extends Vehicle
+class Bicycle extends Vehicle implements LightableInterface
 {
 
     public function __construct(string $color)
@@ -8,9 +8,19 @@ class Bicycle extends Vehicle
         $this->nbWheels = 2;
     }
 
+    public function switchOn(): bool
+    {
+        return $this->getCurrentSpeed() > 10;
+    }
+
+    public function switchOff(): bool
+    {
+        return false;
+    }
+
     public function forward(): string
     {
-        $this->currentSpeed = 15;
+        $this->setCurrentSpeed(15);
 
         return "Go !";
     }
@@ -18,8 +28,8 @@ class Bicycle extends Vehicle
     public function brake(): string
     {
         $sentence = "";
-        while ($this->currentSpeed > 0) {
-            $this->currentSpeed--;
+        while ($this->getCurrentSpeed() > 0) {
+            $this->setCurrentSpeed($this->getCurrentSpeed() - 1);
             $sentence .= "Brake !!!";
         }
         $sentence .= "I'm stopped !";

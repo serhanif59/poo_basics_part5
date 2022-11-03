@@ -1,6 +1,6 @@
 <?php
 
-class Car extends Vehicle
+class Car extends Vehicle implements LightableInterface
 {
     private string $energy = "";
     private int $levelEnergy = 20;
@@ -11,11 +11,22 @@ class Car extends Vehicle
         $this->energy = $energy;
     }
 
+    public function switchOn(): bool
+    {
+        return true;
+    }
+
+    public function switchOff(): bool
+    {
+        return false;
+    }
+
+
     public function forward(): string
     {
-        if ($this->currentSpeed >= 0 && $this->levelEnergy > 0) {
-            if ($this->currentSpeed < 260) {
-                $this->currentSpeed += 10;
+        if ($this->getCurrentSpeed() >= 0 && $this->levelEnergy > 0) {
+            if ($this->getCurrentSpeed() < 260) {
+                $this->setCurrentSpeed($this->getCurrentSpeed() + 10);
                 $this->levelEnergy -= 1;
             }
             return "Going Forward!";
@@ -30,8 +41,8 @@ class Car extends Vehicle
     public function back(): string
     {
         if ($this->currentSpeed <= 0 && $this->levelEnergy > 0) {
-            if ($this->currentSpeed < 70) {
-                $this->currentSpeed -= 10;
+            if ($this->getCurrentSpeed() < 70) {
+                $this->setCurrentSpeed($this->getCurrentSpeed() - 10);
                 $this->levelEnergy -= 1;
             }
             return "Going back!";
@@ -45,8 +56,8 @@ class Car extends Vehicle
 
     public function brake(): string
     {
-        if ($this->currentSpeed != 0) {
-            $this->currentSpeed += $this->currentSpeed > 0 ?  -10 : 10;
+        if ($this->getCurrentSpeed() != 0) {
+            $this->setCurrentSpeed($this->getCurrentSpeed() + ($this->getCurrentSpeed() > 0 ?  -10 : 10));
             return "Braking!";
         } else
             return "you are stopped!";
